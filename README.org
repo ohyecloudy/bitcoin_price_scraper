@@ -1,0 +1,7 @@
+# -*- mode: org -*-
+# -*- coding: utf-8 -*-
+#+TITLE: BitcoinPriceScraper
+#+AUTHOR: Jongbin Oh
+#+EMAIL: ohyecloudy@gmail.com
+
+Elixir [[https://hexdocs.pm/gen_stage/GenStage.html][GenStage]] 라이브러리와 [[https://docs.upbit.com][업비트 API]]를 사용해 비트코인 시세를 긁어오는 테스트 프로젝트.
