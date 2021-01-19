@@ -1,8 +1,8 @@
 defmodule BitcoinPriceScraper.Upbit do
   use Tesla
-  alias BitcoinPriceScraper.Jwt
 
   plug Tesla.Middleware.BaseUrl, "https://api.upbit.com/v1"
+  plug BitcoinPriceScraper.JwtAuth
   plug Tesla.Middleware.JSON
 
   # 최대 요청 캔들 카운트
@@ -10,14 +10,7 @@ defmodule BitcoinPriceScraper.Upbit do
   @max_candle_count 200
 
   def markets() do
-    payload = %{
-      access_key: Application.get_env(:bitcoin_price_scraper, :upbit_access_key),
-      nonce: UUID.uuid4()
-    }
-
-    jwt_token = Jwt.sign!(payload)
-
-    get("market/all", headers: [{"authorization", "Bearer #{jwt_token}"}])
+    get("market/all")
   end
 
   def candles(market, to, count \\ 200) do
@@ -27,22 +20,6 @@ defmodule BitcoinPriceScraper.Upbit do
       count: min(count, @max_candle_count)
     }
 
-    query_hash =
-      :crypto.hash(:sha256, Tesla.encode_query(query))
-      |> Base.encode16()
-
-    payload = %{
-      access_key: Application.get_env(:bitcoin_price_scraper, :upbit_access_key),
-      nonce: UUID.uuid4(),
-      query_hash: query_hash,
-      query_hash_alg: "SHA512"
-    }
-
-    jwt_token = Jwt.sign!(payload)
-
-    get("candles/minutes/1",
-      query: query,
-      headers: [{"authorization", "Bearer #{jwt_token}"}]
-    )
+    get("candles/minutes/1", query: query)
   end
 end
