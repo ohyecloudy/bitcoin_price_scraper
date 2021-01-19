@@ -25,3 +25,5 @@ bitcoin_price_scraper-*.tar
 
 # Temporary files for e.g. tests
 /tmp
+
+/config/*.secret.exs
