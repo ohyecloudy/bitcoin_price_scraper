@@ -2,6 +2,7 @@
 
 defmodule BitcoinPriceScraper.RateLimiter do
   use GenStage
+  alias BitcoinPriceScraper.Upbit
 
   def start_link() do
     GenStage.start_link(__MODULE__, :ok)
@@ -24,8 +25,27 @@ defmodule BitcoinPriceScraper.RateLimiter do
   end
 
   def handle_events(events, _from, producers) do
-    # consume!
-    IO.puts("#{inspect(NaiveDateTime.utc_now())}: #{inspect(events, charlists: true)}")
+    IO.puts("handle_events - #{to_string(NaiveDateTime.utc_now())}")
+
+    for e <- events do
+      case Upbit.candles("KRW-BTC", e, 200) do
+        {:ok, %{body: body, status: status, headers: headers}} ->
+          remaining_req =
+            Enum.find_value(headers, fn h ->
+              case h do
+                {"remaining-req", remain} -> remain
+                _ -> nil
+              end
+            end)
+
+          IO.puts(
+            "status: #{status}, candle count: #{Enum.count(body)}, remaining-req: #{remaining_req}"
+          )
+
+        error ->
+          IO.inspect(error)
+      end
+    end
 
     {:noreply, [], producers}
   end
