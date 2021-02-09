@@ -26,9 +26,10 @@ defmodule BitcoinPriceScraper.MixProject do
       {:tesla, "~> 1.4"},
       {:joken, "~> 2.3"},
       {:jason, "~> 1.1"},
-      {:uuid, "~> 1.1"}
-      # {:dep_from_hexpm, "~> 0.3.0"},
-      # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
+      {:uuid, "~> 1.1"},
+      {:prometheus_ex, "~> 3.0"},
+      {:prometheus_httpd, "~> 2.1"},
+      {:telemetry, "~> 0.4.2"}
     ]
   end
 end

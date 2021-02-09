@@ -49,7 +49,14 @@ defmodule BitcoinPriceScraper.RateLimiter do
     end
 
     # 이전에 실패한 candle 조회 요청을 보낸다
+    :telemetry.execute(
+      [:upbit, :quotation, :request, :retry],
+      %{count: Enum.count(producers[from].pending)}
+    )
+
     {_success, pending} = request_candles(producers[from].pending)
+
+    :telemetry.execute([:upbit, :quotation, :request, :new], %{count: Enum.count(events)})
     {_success, failed} = request_candles(events)
 
     producers =
@@ -70,6 +77,8 @@ defmodule BitcoinPriceScraper.RateLimiter do
   defp request_candles(events) do
     events
     |> Enum.split_with(fn e ->
+      before_request = System.monotonic_time()
+
       case Upbit.candles("KRW-BTC", e, 200) do
         {:ok, %{body: body, status: status, headers: headers}} ->
           remaining_req =
@@ -84,10 +93,24 @@ defmodule BitcoinPriceScraper.RateLimiter do
             "status: #{status}, candle count: #{Enum.count(body)}, remaining-req: #{remaining_req}"
           )
 
+          :telemetry.execute([:upbit, :quotation, :response, :success], %{count: 1})
+
+          :telemetry.execute(
+            [:upbit, :quotation, :request, :success, :duration, :milliseconds],
+            %{duration: System.monotonic_time() - before_request}
+          )
+
           true
 
         error ->
           IO.inspect(error)
+          :telemetry.execute([:upbit, :quotation, :response, :failed], %{count: 1})
+
+          :telemetry.execute(
+            [:upbit, :quotation, :request, :failed, :duration, :milliseconds],
+            %{duration: System.monotonic_time() - before_request}
+          )
+
           false
       end
     end)

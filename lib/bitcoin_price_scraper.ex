@@ -1,7 +1,9 @@
 defmodule BitcoinPriceScraper do
-  alias BitcoinPriceScraper.{QuotationDemander, RateLimiter}
+  alias BitcoinPriceScraper.{QuotationDemander, RateLimiter, Metrics}
 
   def scrap() do
+    Metrics.start()
+
     to = NaiveDateTime.utc_now()
     # 30 days
     from = NaiveDateTime.add(to, -60 * 60 * 24 * 30)
