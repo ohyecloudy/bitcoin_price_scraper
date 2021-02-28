@@ -5,3 +5,33 @@
 #+EMAIL: ohyecloudy@gmail.com
 
 Elixir [[https://hexdocs.pm/gen_stage/GenStage.html][GenStage]] 라이브러리와 [[https://docs.upbit.com][업비트 API]]를 사용해 비트코인 시세를 긁어오는 테스트 프로젝트.
+
+** :rocket: 시작하기 (Getting Started)
+
+   [[https://www.upbit.com/mypage/open_api_management][업비트 홈페이지]]에서 open api key를 발급받는다
+
+   #+begin_example
+     $ emacs config/config.exs
+   #+end_example
+
+   =config.exs= 파일을 열어 발급 받은 access key와 secret key를 입력한다.
+
+   #+begin_example
+     $ emacs config/dev.secret.exs
+   #+end_example
+
+   혹은 =dev.secret.exs= 파일을 만들어서 access key와 secret key를 입력한다.
+
+   #+begin_example
+     $ script/server-with-metrics
+   #+end_example
+
+   스크립트를 실행하면 bitcoin_price_scraper, prometheus, grafana가 실행된다.
+
+   [[docs/image/grafana.png]]
+
+   http://localhost:3000/ 주소로 grafana에 접속해 New Dashboard를 열어 메트릭을 확인한다.
+
+** :balance_scale: 라이선스 (License)
+
+   MIT 라이선스를 따르고 있습니다. LICENSE.md 파일을 참고하세요.
