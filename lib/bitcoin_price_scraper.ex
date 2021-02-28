@@ -5,8 +5,13 @@ defmodule BitcoinPriceScraper do
     Metrics.start()
 
     to = NaiveDateTime.utc_now()
-    # 30 days
-    from = NaiveDateTime.add(to, -60 * 60 * 24 * 30)
+
+    from =
+      NaiveDateTime.add(
+        to,
+        -60 * 60 * 24 * Application.get_env(:bitcoin_price_scraper, :scrap_days)
+      )
+
     # 시세(quotation) API 요청시 캔들 개수 최대값: 200
     # https://docs.upbit.com/reference#분minute-캔들-1
     {:ok, producer} = QuotationDemander.start_link(from, to, 200)

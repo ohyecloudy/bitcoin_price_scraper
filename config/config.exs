@@ -2,7 +2,8 @@ import Config
 
 config :bitcoin_price_scraper,
   upbit_access_key: "SUPER_ACCESS_KEY",
-  upbit_secret_key: "SUPER_SECRET_KEY"
+  upbit_secret_key: "SUPER_SECRET_KEY",
+  scrap_days: 4 * 365
 
 # https://github.com/deadtrickster/prometheus-httpd/blob/master/doc/prometheus_httpd.md
 config :prometheus, :prometheus_http,
