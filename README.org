@@ -32,6 +32,10 @@ Elixir [[https://hexdocs.pm/gen_stage/GenStage.html][GenStage]] 라이브러리�
 
    http://localhost:3000/ 주소로 grafana에 접속해 New Dashboard를 열어 메트릭을 확인한다.
 
+** :memo: 블로그 포스트
+
+   - [[http://ohyecloudy.com/pnotes/archives/bitcoin-price-scrap-with-elixir-feat-upbit-1-of-3/][GenStage - elixir로 비트코인 시세 스크랩 (feat. 업비트) 1/3]]
+
 ** :balance_scale: 라이선스 (License)
 
    MIT 라이선스를 따르고 있습니다. LICENSE.md 파일을 참고하세요.
